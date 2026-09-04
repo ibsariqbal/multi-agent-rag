@@ -1,0 +1,24 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Resources:
+  RagApi:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: backend/
+      Handler: lambda_handler.handler
+      Runtime: python3.12
+      MemorySize: 1024
+      Timeout: 60
+      Environment:
+        Variables:
+          DEMO_MODE: 'false'
+          PINECONE_INDEX: multi-agent-rag
+      Events:
+        Api:
+          Type: HttpApi
+          Properties:
+            PayloadFormatVersion: '2.0'
+Outputs:
+  ApiUrl:
+    Value: !Sub https://${ServerlessHttpApi}.execute-api.${AWS::Region}.amazonaws.com
+
